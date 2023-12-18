@@ -63,14 +63,25 @@ tasks.register<JavaExec>("startServersWithTestProfile") {
   mainClass.set("org.stellar.anchor.platform.run_profiles.RunTestProfile")
 }
 
-/**
- * Run docker-compose up to start Postgres, Kafka, etc.
- */
+/** Run docker-compose up to start Postgres, Kafka, etc. */
 tasks.register<JavaExec>("dockerComposeUp") {
   println("Running docker-compose up to start Postgres, Kafka ,etc.")
   group = "application"
   classpath = sourceSets["main"].runtimeClasspath
   mainClass.set("org.stellar.anchor.platform.run_profiles.RunDockerDevStack")
+}
+
+tasks.register<Exec>("dockerComposeDown") {
+  workingDir = projectDir
+  commandLine("echo", "`pwd`")
+  println("${projectDir}\\src\\main\\resources\\docker-compose-test.yaml")
+  commandLine(
+    "docker",
+    "compose",
+    "-f",
+    "${projectDir}/src/main/resources/docker-compose-test.yaml",
+    "down"
+  )
 }
 
 val dockerPullAnchorTest by

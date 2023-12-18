@@ -190,7 +190,7 @@ class TestProfileExecutor(val config: TestConfig) {
     if (shouldStartAllServers || shouldStartWalletServer) org.stellar.reference.wallet.stop()
   }
 
-  private fun shutdownDocker() {
+  fun shutdownDocker() {
     docker.afterAll(null)
   }
 
