@@ -1,0 +1,162 @@
+openapi: 3.0.0
+info:
+  title: Stellar Anchor API
+  version: "1.0"
+paths: {}
+components:
+  schemas:
+    Assets:
+      type: object
+      properties:
+        assets:
+          type: array
+          items:
+            $ref: '#/components/schemas/AssetInfo'
+    AssetInfo:
+      type: object
+      properties:
+        code:
+          type: string
+        issuer:
+          type: string
+        distribution_account:
+          type: string
+        schema:
+          $ref: '#/components/schemas/Schema'
+        significant_decimals:
+          type: integer
+        deposit:
+          $ref: '#/components/schemas/DepositOperation'
+        withdraw:
+          $ref: '#/components/schemas/WithdrawOperation'
+        send:
+          $ref: '#/components/schemas/SendOperation'
+        sep31:
+          $ref: '#/components/schemas/Sep31Operation'
+        sep38:
+          $ref: '#/components/schemas/Sep38Operation'
+        sep6_enabled:
+          type: boolean
+        sep24_enabled:
+          type: boolean
+        sep31_enabled:
+          type: boolean
+        sep38_enabled:
+          type: boolean
+    Schema:
+      type: string
+      enum: [stellar, iso4217]
+    AssetOperation:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+        min_amount:
+          type: integer
+        max_amount:
+          type: integer
+    DepositOperation:
+      allOf:
+        - $ref: '#/components/schemas/AssetOperation'
+        - type: object
+          properties:
+            methods:
+              type: array
+              items:
+                type: string
+    WithdrawOperation:
+      allOf:
+        - $ref: '#/components/schemas/AssetOperation'
+        - type: object
+          properties:
+            methods:
+              type: array
+              items:
+                type: string
+    SendOperation:
+      type: object
+      properties:
+        fee_fixed:
+          type: integer
+        fee_percent:
+          type: integer
+        min_amount:
+          type: integer
+        max_amount:
+          type: integer
+    Sep31Operation:
+      type: object
+      properties:
+        quotesSupported:
+          type: boolean
+        quotesRequired:
+          type: boolean
+        sep12:
+          $ref: '#/components/schemas/Sep12Operation'
+        fields:
+          $ref: '#/components/schemas/Fields'
+    Sep38Operation:
+      type: object
+      properties:
+        exchangeable_assets:
+          type: array
+          items:
+            type: string
+        country_codes:
+          type: array
+          items:
+            type: string
+        sell_delivery_methods:
+          type: array
+          items:
+            $ref: '#/components/schemas/DeliveryMethod'
+        buy_delivery_methods:
+          type: array
+          items:
+            $ref: '#/components/schemas/DeliveryMethod'
+        decimals:
+          type: integer
+    DeliveryMethod:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+    Sep12Operation:
+      type: object
+      properties:
+        sender:
+          $ref: '#/components/schemas/Types'
+        receiver:
+          $ref: '#/components/schemas/Types'
+    Types:
+      type: object
+      properties:
+        types:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/Type'
+    Type:
+      type: object
+      properties:
+        description:
+          type: string
+    Fields:
+      type: object
+      properties:
+        transaction:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/Field'
+    Field:
+      type: object
+      properties:
+        description:
+          type: string
+        choices:
+          type: array
+          items:
+            type: string
+        optional:
+          type: boolean
