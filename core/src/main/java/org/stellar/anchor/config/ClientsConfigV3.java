@@ -2,21 +2,16 @@ package org.stellar.anchor.config;
 
 import java.util.List;
 import java.util.Set;
+import javax.annotation.Nonnull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
-import javax.annotation.Nonnull;
-
 public class ClientsConfigV3 {
-  /**
-   * List of custodial clients. Defaults to an empty list.
-   */
+  /** List of custodial clients. Defaults to an empty list. */
   List<CustodialClientConfig> custodialClients;
-  /**
-   * List of noncustodial clients. Defaults to an empty list.
-   */
+  /** List of noncustodial clients. Defaults to an empty list. */
   List<NonCustodialClientConfig> nonCustodialClients;
 
   @Data
@@ -33,7 +28,7 @@ public class ClientsConfigV3 {
      * The public key used for SEP-10 authentication. If a SEP-10 request is signed with this key,
      * the service will activate the callback if the callback_url is provided.
      */
-    @NonNull String signingKey;
+    @NonNull List<String> signingKeys;
 
     /**
      * The endpoint URL to which the service can send callbacks, enabling real-time updates or
@@ -70,20 +65,12 @@ public class ClientsConfigV3 {
      * The domain associated with the client, used for verifying the client's identity. If a SEP-10
      * request's domain matches, the callback will be activated if callback_url is defined.
      */
-    @Nonnull String domain;
+    @Nonnull List<String> domains;
 
     /**
      * Similar to the custodial clients, this is the endpoint for callbacks, facilitating
      * communication.
      */
     String callbackUrl;
-
-    /**
-     * The public key used to verify the client's identity against the domain's TOML file. If
-     * specified, the service will validate this key against the `SIGNING_KEY` published in the
-     * domain's TOML file. A mismatch or absence of this key in the TOML file results in a
-     * validation error, ensuring security and integrity.
-     */
-    String signingKey;
   }
 }
